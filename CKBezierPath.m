@@ -71,7 +71,7 @@ static void CKBezierPathTransformer(void *infoRecord, const CGPathElement *eleme
 
 static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
 {
-	NSMutableArray *elements = (NSMutableArray *)infoRecord;
+	NSMutableArray *elements = (__bridge NSMutableArray *)infoRecord;
     NSMutableDictionary *item = [NSMutableDictionary dictionary];
     [item setObject:[NSNumber numberWithInteger:element->type] forKey:CKBezierPathElementTypeKey];
     
@@ -132,7 +132,6 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
         NSZoneFree(NULL, _dashPattern), _dashPattern = NULL;
     }
     
-    [super dealloc];
 }
 
 #pragma mark -
@@ -199,8 +198,8 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
-    NSMutableArray *array = [[NSMutableArray array] retain];
-    CGPathApply(_cgPath, array, CKBezierPathEncoder);
+    NSMutableArray *array = [NSMutableArray array];
+    CGPathApply(_cgPath, (__bridge void * _Nullable)(array), CKBezierPathEncoder);
     [coder encodeObject:array forKey:CKBezierPathKey];
     [coder encodeFloat:_flatness forKey:CKBezierPathFlatnessKey];
     [coder encodeFloat:_lineWidth forKey:CKBezierPathLineWidthKey];
@@ -208,11 +207,11 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
     [coder encodeInt:_lineCapStyle forKey:CKBezierPathLineCapStyleKey];
     [coder encodeInt:_lineJoinStyle forKey:CKBezierPathLineJoinStyleKey];
     [coder encodeBool:_usesEvenOddFillRule forKey:CKBezierPathEvenOddFillRuleKey];
-    [array release], array = nil;
+    
     
     if(_dashCount > 0)
     {
-        [coder encodeInt:_dashCount forKey:CKBezierPathDashCountKey];
+        [coder encodeInteger:_dashCount forKey:CKBezierPathDashCountKey];
         [coder encodeFloat:_dashPhase forKey:CKBezierPathDashPhaseKey];
         
         NSMutableArray *values = [NSMutableArray arrayWithCapacity:(NSUInteger)_dashCount];
@@ -247,7 +246,7 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
     // Creating a CKBezierPath Object
 + (CKBezierPath *)bezierPath
 {
-    return [[[self class] new] autorelease];
+    return [[self class] new];
 }
 
 + (CKBezierPath *)bezierPathWithRect:(CGRect)rect
@@ -255,7 +254,7 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
     CKBezierPath *bezierPath = [[self class] new];
     [bezierPath appendBezierPathWithRect:rect];
     
-    return [bezierPath autorelease];
+    return bezierPath;
 }
 
 + (CKBezierPath *)bezierPathWithOvalInRect:(CGRect)rect
@@ -263,7 +262,7 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
     CKBezierPath *bezierPath = [[self class] new];
     [bezierPath appendBezierPathWithOvalInRect:rect];
     
-    return [bezierPath autorelease];
+    return bezierPath;
 }
 
 + (CKBezierPath *)bezierPathWithRoundedRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadius
@@ -271,7 +270,7 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
     CKBezierPath *bezierPath = [[self class] new];
     [bezierPath appendBezierPathWithRoundedRect:rect byRoundingCorners:CKRectCornerAllCorners cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
 
-    return [bezierPath autorelease];
+    return bezierPath;
 }
 
 + (CKBezierPath *)bezierPathWithRoundedRect:(CGRect)rect byRoundingCorners:(CKRectCorner)corners cornerRadii:(CGSize)cornerRadii
@@ -279,7 +278,7 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
     CKBezierPath *bezierPath = [[self class] new];
     [bezierPath appendBezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:cornerRadii];
     
-    return [bezierPath autorelease];    
+    return bezierPath;
 }
 
 + (CKBezierPath *)bezierPathWithArcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise
@@ -287,14 +286,14 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
     CKBezierPath *bezierPath = [[self class] new];
     [bezierPath addArcWithCenter:center radius:radius startAngle:startAngle endAngle:endAngle clockwise:clockwise];
     
-    return [bezierPath autorelease];
+    return bezierPath;
 }
 
 + (CKBezierPath *)bezierPathWithCGPath:(CGPathRef)cgPath
 {
     CKBezierPath *path = [[self class] new];
     path.CGPath = cgPath;
-    return [path autorelease];
+    return path;
 }
 
 #pragma mark -
