@@ -7,6 +7,12 @@
 //
 
 #import "CKSourceAnnotations.h"
+#import <Foundation/Foundation.h>
+#import <TargetConditionals.h>
+
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#endif
 
 #if !defined(DegreesToRadians)
 #define DegreesToRadians(x) (x * (CGFloat)M_PI / 180.0f)
