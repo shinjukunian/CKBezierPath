@@ -28,7 +28,10 @@ CGPoint CGPointFromString(NSString *encodedString)
 {
     CGPoint point = CGPointZero;
     char left, comma, right;
-    sscanf([encodedString UTF8String], "%c%f%c %f%c", &left, &point.x, &comma, &point.y, &right);
+    if (!encodedString) {
+        return point;
+    }
+    sscanf([encodedString UTF8String], "%c%lf%c %lf%c", &left, &point.x, &comma, &point.y, &right);
     
     return point;
 }
