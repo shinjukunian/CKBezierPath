@@ -10,8 +10,10 @@
 #import <Foundation/Foundation.h>
 #import <TargetConditionals.h>
 
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IOS
 #import <UIKit/UIKit.h>
+#else
+#import <Cocoa/Cocoa.h>
 #endif
 
 #if !defined(DegreesToRadians)
@@ -28,8 +30,13 @@
 extern CGPoint CGPointFromString(NSString *encodedString) __attribute__((nonnull(1)));
 #endif
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED
+#if TARGET_OS_IOS
 #define CKGraphicsGetCurrentContext() UIGraphicsGetCurrentContext()
+#else
+#define CKGraphicsGetCurrentContext() [[NSGraphicsContext currentContext] graphicsPort]
+#define NSStringFromCGPoint(p) [NSString stringWithFormat:@"{%f, %f}", p.x, p.y]
+
+extern CGPoint CGPointFromString(NSString *encodedString) __attribute__((nonnull(1)));
 #endif
 
 typedef enum {
