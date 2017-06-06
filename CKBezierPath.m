@@ -127,12 +127,14 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
 {
     if(NULL != _cgPath)
     {
-        CGPathRelease(_cgPath), _cgPath = NULL;
+        CGPathRelease(_cgPath);
+        _cgPath = NULL;
     }
     
     if(NULL != _dashPattern)
     {
-        NSZoneFree(NULL, _dashPattern), _dashPattern = NULL;
+        NSZoneFree(NULL, _dashPattern);
+        _dashPattern = NULL;
     }
     
 }
@@ -193,7 +195,8 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
                 pattern[i++] = [number floatValue];
             }
             [self setLineDash:pattern count:count phase:phase];
-            NSZoneFree(NULL, pattern), pattern = NULL;
+            NSZoneFree(NULL, pattern);
+            pattern = NULL;
         }
     }
     return self;
@@ -401,7 +404,8 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
     CGPathCloseSubpath(path);
     
     CGPathAddPath(_cgPath, &_transform, path);
-    CGPathRelease(path), path = NULL;
+    CGPathRelease(path);
+    path = NULL;
 }
 
     // Constructing a Path
