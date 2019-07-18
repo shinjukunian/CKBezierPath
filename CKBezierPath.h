@@ -47,7 +47,7 @@ typedef enum {
     CKRectCornerAllCorners  = (CKRectCornerTopLeft | CKRectCornerTopRight | CKRectCornerBottomLeft | CKRectCornerBottomRight)
 } CKRectCorner;
 
-@interface CKBezierPath : NSObject <NSCoding, NSCopying>
+@interface CKBezierPath : NSObject <NSSecureCoding, NSCopying>
 {
 @private
     CGMutablePathRef _cgPath;

@@ -139,15 +139,21 @@ static void CKBezierPathEncoder(void *infoRecord, const CGPathElement *element)
     
 }
 
+
 #pragma mark -
 #pragma mark NSCoding Protocol
+
++ (BOOL)supportsSecureCoding{
+    return YES;
+}
+
 - (id)initWithCoder:(NSCoder *)coder
 {
     if(nil != (self = [super init]))
     {
         _cgPath = CGPathCreateMutable();
         [self _setDefaults];
-        NSArray *elements = [coder decodeObjectForKey:CKBezierPathKey];
+        NSArray *elements = [coder decodeObjectOfClass:[NSArray class] forKey:CKBezierPathKey];
         _flatness = [coder decodeFloatForKey:CKBezierPathFlatnessKey];
         _lineWidth = [coder decodeFloatForKey:CKBezierPathLineWidthKey];
         _miterLimit = [coder decodeFloatForKey:CKBezierPathMiterLimitKey];
