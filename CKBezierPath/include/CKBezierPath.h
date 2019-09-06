@@ -6,7 +6,7 @@
 //  © Copyright 2008 Crimson Research, Inc. All rights reserved.
 //
 
-#import "CKSourceAnnotations.h"
+#import "../CKSourceAnnotations.h"
 #import <Foundation/Foundation.h>
 #import <TargetConditionals.h>
 
